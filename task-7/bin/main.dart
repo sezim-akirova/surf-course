@@ -5,12 +5,34 @@ class Product {
   final int price;
   final int qty;
 
-  Product(
-      {required this.id,
-      required this.category,
-      required this.name,
-      required this.price,
-      required this.qty});
+  Product({
+    required this.id,
+    required this.category,
+    required this.name,
+    required this.price,
+    required this.qty,
+  });
+}
+
+List<Product> parseProducts(String input) {
+  final List<Product> productList = [];
+  final List<String> lines = input.trim().split('\n');
+
+  for (final line in lines) {
+    final List<String> parts = line.split(',');
+    if (parts.length == 5) {
+      final int id = int.parse(parts[0]);
+      final String category = parts[1];
+      final String name = parts[2];
+      final int price = int.parse(parts[3]);
+      final int qty = int.parse(parts[4]);
+      final Product product = Product(
+          id: id, category: category, name: name, price: price, qty: qty);
+      productList.add(product);
+    }
+  }
+
+  return productList;
 }
 
 abstract class Filter {
@@ -35,7 +57,7 @@ class PriceFilter extends Filter {
 
   @override
   bool apply(Product product) {
-    return product.price == maxPrice;
+    return product.price <= maxPrice;
   }
 }
 
@@ -62,19 +84,20 @@ void applyFilter(List<Product> products, Filter filter) {
 }
 
 void main() {
-  final List<Product> productList = [
-    Product(id: 1, category: 'хлеб', name: 'Бородинский', price: 500, qty: 5),
-    Product(id: 2, category: 'хлеб', name: 'Белый', price: 200, qty: 15),
-    Product(
-        id: 3, category: 'молоко', name: 'Полосатый кот', price: 50, qty: 53),
-    Product(id: 4, category: 'молоко', name: 'Коровка', price: 50, qty: 53),
-    Product(id: 5, category: 'вода', name: 'Апельсин', price: 25, qty: 100),
-    Product(id: 6, category: 'вода', name: 'Бородинский', price: 500, qty: 5),
-  ];
+  final String articles = '''
+1,хлеб,Бородинский,500,5
+2,хлеб,Белый,200,15
+3,молоко,Полосатый кот,50,53
+4,молоко,Коровка,50,53
+5,вода,Апельсин,25,100
+6,вода,Бородинский,500,5
+''';
 
-  final categoryFilter = CategoryFilter('вода');
+  final List<Product> productList = parseProducts(articles);
+
+  final categoryFilter = CategoryFilter('хлеб');
   final priceFilter = PriceFilter(500);
-  final quantityFilter = QuantityFilter(100);
+  final quantityFilter = QuantityFilter(10);
 
   print("Category Filter:");
   applyFilter(productList, categoryFilter);
