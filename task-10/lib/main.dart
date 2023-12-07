@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:my_visiting_card/constants/my_fonts.dart';
+import 'package:my_visiting_card/constants/my_icons.dart';
+import 'package:my_visiting_card/constants/my_images.dart';
+import 'package:my_visiting_card/texts.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: MyBusinessCard(),
       debugShowCheckedModeBanner: false, //убираю красную ленту debug
     );
@@ -16,6 +22,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MyBusinessCard extends StatelessWidget {
+  const MyBusinessCard({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +35,7 @@ class MyBusinessCard extends StatelessWidget {
       body: Stack(
         children: [
           SingleChildScrollView(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -45,61 +53,59 @@ class MyBusinessCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(
                         15), // Скругление углов изображения
                     child: Image.asset(
-                      'assets/images/photo.jpg',
+                      MyImages.photo,
                       width: 220,
                       height: 280,
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 const Text(
-                  'SEZIM AKIROVA',
+                  MyTexts.name,
                   style: TextStyle(
-                    fontFamily: 'assets/fonts/fonts3.ttf',
+                    fontFamily: MyFonts.fonts3,
                     fontSize: 24,
                     fontWeight: FontWeight.bold, //жирный шрифт
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 const Text(
-                  'FLUTTER DEVELOPER',
+                  MyTexts.role,
                   style: TextStyle(
-                    fontFamily: 'assets/fonts/fonts2',
+                    fontFamily: MyFonts.fonts2,
                     fontSize: 16,
                   ),
                 ),
-                SizedBox(height: 1),
+                const SizedBox(height: 1),
                 const Text(
                   '_______________',
                   style: TextStyle(
                     fontSize: 15,
                   ),
                 ),
-                SizedBox(height: 1),
-                _buildSection(
-                    'assets/icons/avatar.svg', 'Student of Surf company'),
-                _buildSection('assets/icons/hobby.svg',
-                    'Travel, read books and take photos'),
-                _buildSection(
-                    'assets/icons/work.svg', 'Beginner mobile app developer'),
-                SizedBox(height: 20),
+                const SizedBox(height: 1),
+                const SectionWidget(
+                    iconPath: MyIcons.avatar, title: MyTexts.aboutMe),
+                const SectionWidget(
+                    iconPath: MyIcons.hobby, title: MyTexts.hobby),
+                const SectionWidget(
+                    iconPath: MyIcons.work, title: MyTexts.work),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SvgPicture.asset('assets/icons/phone.svg',
-                        height: 18, width: 18),
-                    SizedBox(width: 10),
+                    SvgPicture.asset(MyIcons.phone, height: 18, width: 18),
+                    const SizedBox(width: 10),
                     const Text(
-                      '+7 991-952-4471',
+                      MyTexts.number,
                       style: TextStyle(fontSize: 16),
                     ),
-                    SizedBox(width: 16),
-                    SvgPicture.asset('assets/icons/map.svg',
-                        height: 18, width: 18),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 16),
+                    SvgPicture.asset(MyIcons.map, height: 18, width: 18),
+                    const SizedBox(width: 8),
                     const Text(
-                      'Kyrgyzstan, Bishkek',
+                      MyTexts.place,
                       style: TextStyle(fontSize: 16),
                     ),
                   ],
@@ -110,27 +116,22 @@ class MyBusinessCard extends StatelessWidget {
           Positioned(
             top: -35,
             left: -20,
-            child: Image.asset('assets/images/tropic1.png', //не выходят листья
-                height: 150,
-                width: 150),
+            child: Image.asset(MyImages.tropic1, height: 150, width: 150),
           ),
           Positioned(
             top: -30,
             right: -20,
-            child: Image.asset('assets/images/tropic2.png',
-                height: 150, width: 150),
+            child: Image.asset(MyImages.tropic2, height: 150, width: 150),
           ),
           Positioned(
             bottom: -60,
             left: -40,
-            child: Image.asset('assets/images/tropic3.png',
-                height: 150, width: 150),
+            child: Image.asset(MyImages.tropic3, height: 150, width: 150),
           ),
           Positioned(
             bottom: -30,
             right: -20,
-            child: Image.asset('assets/images/tropic4.png',
-                height: 150, width: 150),
+            child: Image.asset(MyImages.tropic4, height: 150, width: 150),
           ),
         ],
       ),
@@ -138,33 +139,52 @@ class MyBusinessCard extends StatelessWidget {
   }
 }
 
-Widget _buildSection(String iconPath, String title, [String content = '']) {
-  return Container(
-    margin: const EdgeInsets.symmetric(vertical: 10),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            SvgPicture.asset(
-              iconPath,
-              height: 20,
-              width: 20,
-            ),
-            const SizedBox(width: 10),
-            Text(
-              title,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
-        SizedBox(height: 10),
-        if (content.isNotEmpty)
-          Text(
-            content,
-            style: const TextStyle(fontSize: 16),
+class SectionWidget extends StatelessWidget {
+  final String iconPath;
+  final String title;
+  final String content;
+
+  const SectionWidget(
+      {super.key,
+      required this.iconPath,
+      required this.title,
+      this.content = ''});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              SvgPicture.asset(
+                iconPath,
+                height: 20,
+                width: 20,
+              ),
+              const SizedBox(width: 10),
+              Text(
+                title,
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ],
           ),
-      ],
-    ),
-  );
+          const SizedBox(height: 10),
+          if (content.isNotEmpty)
+            Wrap(
+              //перенос текста, можно так?
+              children: [
+                Text(
+                  content,
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
+        ],
+      ),
+    );
+  }
 }
