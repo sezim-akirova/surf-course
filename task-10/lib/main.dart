@@ -174,14 +174,11 @@ class SectionWidget extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           if (content.isNotEmpty)
-            Wrap(
-              //перенос текста, можно так?
-              children: [
-                Text(
-                  content,
-                  style: const TextStyle(fontSize: 16),
-                ),
-              ],
+            Text(
+              content,
+              style: const TextStyle(fontSize: 16),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
         ],
       ),
