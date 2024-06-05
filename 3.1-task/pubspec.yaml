@@ -1,7 +1,7 @@
-name: surf_flutter_courses_template
+name: check
 description: Our courses' template.
 publish_to: "none"
-version: 0.1.0
+version: 1.0.0+1
 
 environment:
   sdk: ">=3.0.3 <4.0.0" # Dart SDK version
@@ -10,6 +10,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  decimal: ^2.3.3
+  intl: ^0.19.0
+  bottom_sheet: ^4.0.0
+  cupertino_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:
